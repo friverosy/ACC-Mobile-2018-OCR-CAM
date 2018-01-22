@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.ctwings.myapplication.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:background="@color/marronColor">
+
+        <info.hoang8f.android.segmented.SegmentedGroup
+            android:id="@+id/segmented2"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:sc_border_width="2dp"
+            app:sc_corner_radius="10dp">
+
+            <RadioButton
+                android:id="@+id/in"
+                style="@style/RadioButton"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Entrada" />
+
+            <RadioButton
+                android:id="@+id/out"
+                style="@style/RadioButton"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Salida" />
+        </info.hoang8f.android.segmented.SegmentedGroup>
+
+        <ImageView
+            android:id="@+id/imageView_axxezo"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_below="@id/segmented2"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/icon_frii" />
+
+        <EditText
+            android:id="@+id/editText_rut"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView_axxezo"
+            android:layout_centerHorizontal="true"
+            android:hint="Ingrese o escanee Documento"
+            android:textAlignment="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/radio_button_selected_color"
+            android:textColorHint="@color/radio_button_selected_color"
+            android:textSize="18dp"
+            android:textStyle="italic|bold" />
+
+        <TextView
+            android:id="@+id/textView_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText_rut"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textColor="@color/radio_button_selected_color"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_name"
+            android:textAlignment="center"
+            android:textColor="@color/radio_button_selected_color"
+            android:textSize="18dp"
+            android:textStyle="normal|bold"
+            android:typeface="normal" />
+
+        <TextView
+            android:id="@+id/textView_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_company"
+            android:textAlignment="center"
+            android:textColor="@color/radio_button_selected_color"
+            android:textSize="18dp"
+            android:textStyle="normal|bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_ticks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colortest1">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp" />
+    </RelativeLayout>
+
+
+</LinearLayout>
