@@ -1,7 +1,6 @@
 package com.ctwings.myapplication;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.device.ScanManager;
 import android.graphics.Color;
 import android.graphics.drawable.TransitionDrawable;
 import android.media.MediaPlayer;
@@ -101,9 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressWheel loading;
     private boolean is_input;
 
-    private final static String SCAN_ACTION = "urovo.rcv.message";//扫描结束action
     private Vibrator mVibrator;
-    private ScanManager mScanManager;
     private SoundPool soundpool = null;
     private int soundid;
     private String barcodeStr;
@@ -274,81 +270,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * Get data from barcode as byte array and parsed to string.
-     * This obtained string is sent to the getPerson() method to be handled.
-     */
-    private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            log_app log = new log_app();
-
-            // TODO Auto-generated method stub
-            try {
-                new loadSound(4).execute();
-
-                isScaning = false;
-                //soundpool.play(soundid, 1, 1, 0, 0, 1);
-
-                mVibrator.vibrate(100);
-                cleanEditText();
-
-                byte[] barcode = intent.getByteArrayExtra("barocode");
-                int barocodelen = intent.getIntExtra("length", 0);
-                byte barcodeType = intent.getByteExtra("barcodeType", (byte) 0);
-                barcodeStr = new String(barcode, 0, barocodelen);
-                //String rawCode = barcodeStr;
-
-                int flag = 0; // 0 for end without k, 1 with k
-                int flagSetUp = 0; // 0 for no config QR code.
-
-                if (barcodeType == 28) { // QR code
-                    if (barcodeStr.startsWith("CONFIG-AXX-")) {
-                        flagSetUp = 1;
-                        SetUp(barcodeStr);
-                    } else {
-                        // get only rut
-                        barcodeStr = barcodeStr.substring(
-                                barcodeStr.indexOf("RUN=") + 4,
-                                barcodeStr.indexOf("&type"));
-                        // remove dv.
-                        barcodeStr = barcodeStr.substring(0, barcodeStr.indexOf("-"));
-                    }
-                } else if (barcodeType == 1 || barcodeStr.startsWith("00")) {
-                } else if (barcodeType == 17) { // PDF417
-                    String rutValidator = barcodeStr.substring(0, 8);
-                    rutValidator = rutValidator.replace(" ", "");
-                    rutValidator = rutValidator.endsWith("K") ? rutValidator.replace("K", "0") : rutValidator;
-                    char dv = barcodeStr.substring(8, 9).charAt(0);
-                    boolean isvalid = ValidarRut(Integer.parseInt(rutValidator), dv);
-                    if (isvalid)
-                        barcodeStr = rutValidator;
-                    else { //try validate rut size below 10.000.000
-                        rutValidator = barcodeStr.substring(0, 7);
-                        rutValidator = rutValidator.replace(" ", "");
-                        rutValidator = rutValidator.endsWith("K") ? rutValidator.replace("K", "0") : rutValidator;
-                        dv = barcodeStr.substring(7, 8).charAt(0);
-                        isvalid = ValidarRut(Integer.parseInt(rutValidator), dv);
-                        if (isvalid)
-                            barcodeStr = rutValidator;
-                        else
-                            log.writeLog(getApplicationContext(), "Main:line 262", "ERROR", "rut invalido " + barcodeStr);
-                    }
-                    name = "";
-                }
-
-                if (flagSetUp == 0)
-                    getPerson(barcodeStr);
-                barcodeCache = barcodeStr; // Used to avoid 2 records in a row.
-            } catch (Exception e) {
-                e.printStackTrace();
-                new postWebHookTask().execute("Error reading barcode", e.getMessage());
-            }
-        }
-    };
-
     /**
      * Dictionary of MD5 hashes, each one executes a task.
      *
@@ -428,48 +349,11 @@ public class MainActivity extends AppCompatActivity {
         return dv == (char) (s != 0 ? s + 47 : 75);
     }
 
-    private void initScan() {
-        // TODO Auto-generated method stub
-        mScanManager = new ScanManager();
-        mScanManager.openScanner();
-        mScanManager.switchOutputMode(0);
-    }
 
-    @Override
-    protected void onDestroy() {
-        // TODO Auto-generated method stub
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-        // TODO Auto-generated method stub
-        super.onPause();
-        if (mScanManager != null) {
-            mScanManager.stopDecode();
-            isScaning = false;
-        }
-        unregisterReceiver(mScanReceiver);
-    }
-
-    @Override
-    protected void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
-        initScan();
-        //UpdateDb();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(SCAN_ACTION);
-        registerReceiver(mScanReceiver, filter);
-    }
 
     public void reset() {
-        initScan();
         //cleanEditText();
         barcodeStr = "";
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(SCAN_ACTION);
-        registerReceiver(mScanReceiver, filter);
     }
 
     public void cleanEditText() {

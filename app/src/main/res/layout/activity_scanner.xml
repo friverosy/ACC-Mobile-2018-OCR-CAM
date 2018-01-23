@@ -9,12 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-    </android.support.design.widget.AppBarLayout>
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"></android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
         <info.hoang8f.android.segmented.SegmentedGroup
             android:id="@+id/segmented3"
@@ -40,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="Salida" />
         </info.hoang8f.android.segmented.SegmentedGroup>
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,15 +52,19 @@
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"></FrameLayout>
 
         <LinearLayout
+            android:id="@+id/camera_ticks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#222"
             android:gravity="center"
             android:orientation="horizontal">
-
+            <ImageView
+                android:id="@+id/image_validation"
+                android:layout_width="250dp"
+                android:layout_height="match_parent" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,5 +72,9 @@
                 android:onClick="toggleFlash"
                 android:text="Flash" />
         </LinearLayout>
+
     </LinearLayout>
+
+
+
 </LinearLayout>
