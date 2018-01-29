@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView camera_icon;
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private Class<?> mClss;
+    private static final int RC_BARCODE_CAPTURE = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,7 +237,11 @@ public class MainActivity extends AppCompatActivity {
             fab_camera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    launchActivity(camera_module.class);
+                    Intent intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
+                    intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                    intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+                    startActivityForResult(intent, RC_BARCODE_CAPTURE);
                 }
             });
 
@@ -270,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     /**
      * Dictionary of MD5 hashes, each one executes a task.
      *
@@ -348,7 +354,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return dv == (char) (s != 0 ? s + 47 : 75);
     }
-
 
 
     public void reset() {
@@ -982,42 +987,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    public static String generateString(Random rng, String characters, int length) {
-        char[] text = new char[length];
-        for (int i = 0; i < length; i++) {
-            text[i] = characters.charAt(rng.nextInt(characters.length()));
-        }
-        return new String(text);
-    }
-
-    public void launchActivity(Class<?> clss) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            mClss = clss;
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
-        } else {
-            Intent intent = new Intent(this, clss);
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case ZXING_CAMERA_PERMISSION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (mClss != null) {
-                        Intent intent = new Intent(this, mClss);
-                        startActivity(intent);
-                    }
-                } else {
-                    Toast.makeText(this, "Porfavor, concede los permisos a la camara para poder usarla", Toast.LENGTH_SHORT).show();
-                }
-                return;
         }
     }
 }

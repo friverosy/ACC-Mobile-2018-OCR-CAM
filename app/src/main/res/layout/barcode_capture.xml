@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/topLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:layout_gravity="center"
+    android:keepScreenOn="true"
+    android:orientation="vertical">
+    <info.hoang8f.android.segmented.SegmentedGroup
+        android:id="@+id/segmented2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:sc_border_width="2dp"
+        app:sc_corner_radius="10dp">
+
+        <RadioButton
+            android:id="@+id/in"
+            style="@style/RadioButton"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="Entrada" />
+
+        <RadioButton
+            android:id="@+id/out"
+            style="@style/RadioButton"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="Salida" />
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+    <com.ctwings.myapplication.camera_ui.CameraSourcePreview
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.ctwings.myapplication.camera_ui.GraphicOverlay
+            android:id="@+id/graphicOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.ctwings.myapplication.camera_ui.CameraSourcePreview>
+</LinearLayout>
